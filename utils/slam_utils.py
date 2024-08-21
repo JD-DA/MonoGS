@@ -68,6 +68,10 @@ def get_loss_tracking_rgb(config, image, depth, opacity, viewpoint):
     rgb_pixel_mask = (gt_image.sum(dim=0) > rgb_boundary_threshold).view(*mask_shape)
     rgb_pixel_mask = rgb_pixel_mask * viewpoint.grad_mask
     l1 = opacity * torch.abs(image * rgb_pixel_mask - gt_image * rgb_pixel_mask)
+
+    torch.cuda.empty_cache()
+    del gt_image
+
     return l1.mean()
 
 

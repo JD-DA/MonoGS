@@ -101,6 +101,10 @@ class FrontEnd(mp.Process):
                     )
 
                 initial_depth[~valid_rgb] = 0  # Ignore the invalid rgb pixels
+
+                torch.cuda.empty_cache()
+                del gt_img
+
             return initial_depth.cpu().numpy()[0]
         # use the observed depth
         initial_depth = torch.from_numpy(viewpoint.depth).unsqueeze(0)
